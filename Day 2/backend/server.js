@@ -62,20 +62,35 @@ app.get('/login',(req,res)=>{
         role:"admin"
     }
     const token = jwt.sign(claims,secretKey,{
+        notBefore:'30s',
         expiresIn:'50s',
     });
+    console.log(token);
     res.status(201).json({generatedToken:token})
 })
 
 app.get('/profile',(req,res)=>{
-    const token = req.headers["authorization"]
-    const verified = jwt.verify(token,secretKey);
-    if(verified instanceof TokenExpiredError){
-        res.status(404).json({message:"Token Expired"})
-    }else if(verified instanceof JsonWebTokenError){
-         res.status(404).json({message:"Invalid Token"});
+    try{
+    const authheader = req.headers["authorization"]
+    console.log(authheader);
+    if(!authheader){
+        return res.status(401).json({message:"Token Missing"})
     }
-    res.status(202).json({message:"Valid Credentials....."})
+    const token = authheader.split(" ")[1];
+    console.log(token);
+    const verified = jwt.verify(token,secretKey);
+    res.status(200).json({message:"Valid Credentials.....",verified})
+    }catch(err){
+    if(err instanceof jwt.TokenExpiredError){
+        res.status(401).json({message:"Token Expired"})
+    }else if(err instanceof jwt.NotBeforeError){
+        res.status(401).json({message:"Token still not active...."});
+    }
+    else if(err instanceof jwt.JsonWebTokenError){
+         res.status(401).json({message:"Invalid Token"});
+    }
+}
+
 })
 app.listen(port,()=>{
     console.log(`Server is running on port : http://localhost:${port}`);
