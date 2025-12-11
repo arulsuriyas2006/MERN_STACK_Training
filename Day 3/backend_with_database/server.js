@@ -35,7 +35,7 @@ app.get('/getuser/:id', async (req,res)=>{
      try{
         const id = Number(req.params.id);
         console.log(id);
-       const userid =await user.findOne({id});
+       const userid =await user.findById(req.params.id);
        console.log(userid);
        if(!userid){
         res.status(404).json({message:"user not found"});
@@ -85,8 +85,8 @@ app.put('/updateuser/:id', async (req,res)=>{
 
 app.delete('/deleteuser/:id',async function(req,res){
     try{
-     const deleteUser = await user.findByIdAndUpdate(req.params.id,{new:true});
-     if(!deleteUser){
+     const deleteUser = await user.findByIdAndDelete(req.params.id,{new:true});
+     if(!deleteUser){z
         res.status(404).json({message:"user not found"});
      }
      res.status(201).json({message:"user deleted successfully",deleteUser});
