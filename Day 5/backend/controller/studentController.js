@@ -1,6 +1,7 @@
 const student = require('../model/studentmodel.js')
 
 const addStudent = async (req,res)=>{
+    console.log("add student")
     try{
    const newStudent ={
         name:req.body.name,
@@ -11,9 +12,10 @@ const addStudent = async (req,res)=>{
         branch:req.body.branch,
         rollNo:req.body.rollNo
    }
-
+    console.log("add1 student")
    const std = new student(newStudent);
    await std.save();
+  console.log("add2 student")
 
    res.status(201).json({message:"student add successfully"},std)
 }catch(err){
@@ -32,13 +34,14 @@ const getAllStudent = async(req,res)=>{
 }
 
 const getStudentBasedId = async(req,res)=>{
+    console.log("get student function");
      try{
        const userid =await student.findById(req.params.id);
        console.log(userid);
        if(!userid){
         res.status(404).json({message:"user not found"});
        }
-       res.status(200).json({message:" user fetch successfully",userid});
+       res.status(200).json({userid});
      }catch(err){
        res.status(500).json({message:"error to fetch users",err})     
     }

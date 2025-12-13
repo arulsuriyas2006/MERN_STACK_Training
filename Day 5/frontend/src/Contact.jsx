@@ -5,7 +5,7 @@ const Contact = () => {
   return (
     <div>
       <Nav/>
-        <h1>hi contact component</h1>
+        <h1>hi Contact Component</h1>
     </div>
   )
 }

@@ -29,5 +29,9 @@ box-shadow: 3px 3px 5px ;
 }
 a{
   color: black;
-  text-decoration-line: none;
+  text-decoration-line: none !important;
+}
+#images{
+  height:vh;
+  width:100vw;
 }

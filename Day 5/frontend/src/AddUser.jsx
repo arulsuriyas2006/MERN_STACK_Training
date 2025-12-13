@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-// import "./styles/register.css"
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
 import {toast,ToastContainer} from "react-toastify";
 import Nav from './Nav';
 const AddUser = () => {
@@ -12,17 +13,18 @@ const AddUser = () => {
         branch:"",
         rollNo:""
     })
-
+    const navigate = useNavigate();
 
     const handleChange =(e)=>{
         setStudentDetails({...StudentDetails,[e.target.name]:e.target.value})
     }
-    const handleSubmit = async()=>{
+    const handleSubmit = async(e)=>{
        
        try{
         e.preventDefault();
+        console.log(StudentDetails)
        const res = await axios.post('http://localhost:5000/api/addstudent',StudentDetails)
-       console.oog(StudentDetails);
+       console.log(StudentDetails);
        toast.success(res.data.message)
        setStudentDetails({
         name:"",
@@ -33,6 +35,9 @@ const AddUser = () => {
         branch:"",
         rollNo:""
        })
+        setTimeout(()=>{
+            navigate('/getuser')
+          },2000)
        }catch(err){
        toast.error("error to add student")
        }
@@ -58,8 +63,8 @@ const AddUser = () => {
             <input type ="tel" placeholder="+91" name ="phone" value ={StudentDetails.phone} pattern="[5-9]{1}[0-9]{9}" onChange={handleChange} required/><br/><br/>
 
             <label htmlFor="">Gender : </label>
-            <input type ="radio" name ="gender"   value ={StudentDetails.gender}onChange={handleChange}/>Male<br/><br/>
-            <input type ="radio"  name ="gender" value ={StudentDetails.gender} onChange={handleChange}/>Female<br/><br/>
+            <input type ="radio" name ="gender"   value ="Male" onChange={handleChange}/>Male<br/><br/>
+            <input type ="radio"  name ="gender" value ="Female" onChange={handleChange}/>Female<br/><br/>
             
             <label htmlFor="">Branch :</label>
             <select name="branch" value  ={StudentDetails.branch}onChange={handleChange}>
@@ -73,8 +78,8 @@ const AddUser = () => {
 
              <label htmlFor="">RollNo :</label>
              <input type="text" name ="rollNo" value ={StudentDetails.rollNo} placeholder='23CSR...'onChange={handleChange}required/>
-              <button className="btn btn-primary" type="submit" >Submit</button>
-                <button className="btn btn-warning" type="reset" >Cancel</button>
+              <button type="submit">Submit</button>
+                <button type="reset">Cancel</button>
          </fieldset>
       </form>
       <ToastContainer/>

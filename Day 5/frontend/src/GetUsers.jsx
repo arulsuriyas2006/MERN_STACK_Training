@@ -34,7 +34,7 @@ const deleteDetails = async(id)=>{
 }
 
 const EditDetails = async(id)=>{
-  navigate(`/editstudent/:${id}`)
+  navigate(`/editstudent/${id}`)
 }
   useEffect(()=>{
     fetchStudentDetails();
